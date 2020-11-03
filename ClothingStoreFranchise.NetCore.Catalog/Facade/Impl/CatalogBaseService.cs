@@ -28,7 +28,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
         {
             //await CreateValidationActionsAsync(dto);
             TEntity entity = _mapper.Map<TEntity>(dto);
-            return await CreateActionsAsync(entity, dto);
+            return await CreateActionsAsync(entity);
         }
 
         public async virtual Task<ICollection<TEntityDto>> CreateAsync(ICollection<TEntityDto> dtos)
@@ -36,11 +36,11 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             var entities = new List<TEntity>();
             foreach (TEntityDto dto in dtos)
             {
-                await CreateValidationActionsAsync(dto);
+                //await CreateValidationActionsAsync(dto);
                 TEntity entity = _mapper.Map<TEntity>(dto);
                 entities.Add(entity);
             }
-            return await CreateActionsAsync(entities, dtos);
+            return await CreateActionsAsync(entities);
         }
 
         protected async virtual Task CreateValidationActionsAsync(TEntityDto dto)
@@ -55,13 +55,13 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             }
         }
 
-        protected async virtual Task<TEntityDto> CreateActionsAsync(TEntity entity, TEntityDto dto)
+        protected async virtual Task<TEntityDto> CreateActionsAsync(TEntity entity)
         {
             TEntity entityCreated = await _entityDao.CreateAsync(entity);
             return _mapper.Map<TEntityDto>(entityCreated);
         }
 
-        protected async virtual Task<ICollection<TEntityDto>> CreateActionsAsync(ICollection<TEntity> entities, ICollection<TEntityDto> dtos)
+        protected async virtual Task<ICollection<TEntityDto>> CreateActionsAsync(ICollection<TEntity> entities)
         {
             ICollection<TEntity> created = await _entityDao.CreateAsync(entities);
             return _mapper.Map<ICollection<TEntityDto>>(created);
@@ -88,11 +88,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             return entities.Select(l => _mapper.Map<TEntityDto>(l)).ToList();
         }
 
-        protected virtual ICollection<TEntity> LoadAllAllowedEntities()
-        {
-            return null;
-        }
-
         #endregion
 
         #region "Update"
@@ -106,7 +101,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected async virtual Task<TEntity> UpdateValidationActionsAsync(TEntityDto dto)
         {
-            TEntity entity = await _entityDao.LoadAsync(dto.Key());
+            //TEntity entity = await _entityDao.LoadAsync(dto.Key());
             /*if (!AreEntitiesVisible(new[] { entity }, true))
             {
                 throw new EntityDoesNotExistException();
@@ -120,7 +115,8 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
                 //throw new EntityAlreadyExistsException();
             }
 
-            return entity;
+            //return entity;
+            return null;
         }
 
         protected async virtual Task<TEntityDto> UpdateActionsAsync(TEntity entity, TEntityDto dto)

@@ -19,7 +19,5 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade
         Task DeleteAsync(ICollection<long> listAppId);
 
         Task<ICollection<CatalogProductDto>> LoadAllAsync();
-
-        Task CreateProductAsync(CatalogProductDto catalogProductDto);
     }
 }

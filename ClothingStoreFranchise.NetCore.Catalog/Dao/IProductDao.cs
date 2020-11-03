@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ClothingStoreFranchise.NetCore.Catalog.Dao
 {
-    interface IProductDao
+    public interface IProductDao
     {
     }
 }

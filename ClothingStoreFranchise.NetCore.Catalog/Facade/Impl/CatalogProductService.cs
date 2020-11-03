@@ -20,12 +20,13 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             _catalogIntegrationEventService = catalogIntegrationEventService;
         }
 
-        public async Task CreateProductAsync(CatalogProductDto catalogProductDto)
+        public override async Task<CatalogProductDto> CreateAsync(CatalogProductDto catalogProductDto)
         {
-            await base.CreateAsync(catalogProductDto);
-            var productCreatedEvent = _mapper.Map<CreateProductEvent>(catalogProductDto);
+            var productCreated = await base.CreateAsync(catalogProductDto);
+            var productCreatedEvent = _mapper.Map<CreateProductEvent>(productCreated);
             await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(productCreatedEvent);
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(productCreatedEvent);
+            return productCreated;
         }
         
         public Task<ICollection<string>> LoadEditableEntitiesAsync()
