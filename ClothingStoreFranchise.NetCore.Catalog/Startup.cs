@@ -38,7 +38,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog
             services.AddIntegrationServices(options);
             services.AddDiscoveryClient(Configuration);
             services.AddHttpContextAccessor();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddAuthentication("Basic")
                  .AddScheme<BasicAuthenticationOptions, CustomAuthenticationHandler>("Basic", null);

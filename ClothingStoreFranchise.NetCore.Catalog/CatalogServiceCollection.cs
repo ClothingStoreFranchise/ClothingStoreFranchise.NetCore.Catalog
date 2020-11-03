@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using AutoMapper;
 using ClothingStoreFranchise.NetCore.Catalog.Dao;
+using ClothingStoreFranchise.NetCore.Catalog.Dao.Impl;
 using ClothingStoreFranchise.NetCore.Catalog.Facade;
 using ClothingStoreFranchise.NetCore.Catalog.Facade.Impl;
 using ClothingStoreFranchise.NetCore.Common.Events;
@@ -22,10 +23,10 @@ namespace ClothingStoreFranchise.NetCore.Catalog
         public static void AddCatalogServices(this IServiceCollection services)
         {
             services.AddScoped<ICatalogProductDao, CatalogProductDao>();
+            services.AddScoped<ICategoryDao, CategoryDao>();
 
             services.AddScoped<ICatalogProductService, CatalogProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<ICatalogProductService, CatalogProductService>();
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
             services.AddAutoMapper(typeof(Startup).GetTypeInfo().Assembly);
@@ -64,7 +65,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
             {
-                //var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
                 var logger = sp.GetRequiredService<ILogger<RabbitMQPersistentConnection>>();
 
                 var factory = new ConnectionFactory()
@@ -96,11 +96,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog
                                          //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
                                          sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                                      });
-
-                // Changing default behavior when client evaluation occurs to throw. 
-                // Default in EF Core would be to log a warning when client evaluation is performed.
-                //options.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-                //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
             });
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
