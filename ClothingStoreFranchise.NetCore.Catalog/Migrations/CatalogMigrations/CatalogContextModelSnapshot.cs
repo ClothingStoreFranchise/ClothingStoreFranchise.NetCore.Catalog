@@ -22,10 +22,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
             modelBuilder.Entity("ClothingStoreFranchise.NetCore.Catalog.Model.CatalogProduct", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("CatalogProductId")
-                        .HasColumnType("bigint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long?>("CurrentOfferId")
                         .HasColumnType("bigint");
@@ -36,8 +35,8 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
+                    b.Property<long>("SubcategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
@@ -46,24 +45,35 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
 
                     b.HasIndex("CurrentOfferId");
 
+                    b.HasIndex("SubcategoryId");
+
                     b.ToTable("CatalogProducts");
                 });
 
             modelBuilder.Entity("ClothingStoreFranchise.NetCore.Catalog.Model.Category", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("bigint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 0)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("CategoryBelonging")
+                    b.Property<long?>("CategoryBelongingId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("CurrentOfferId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TypeClothingSize")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryBelongingId");
 
                     b.HasIndex("CurrentOfferId");
 
@@ -73,7 +83,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
             modelBuilder.Entity("ClothingStoreFranchise.NetCore.Catalog.Model.Offer", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("bigint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long?>("CatalogProductId")
                         .HasColumnType("bigint");
@@ -110,10 +122,20 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                     b.HasOne("ClothingStoreFranchise.NetCore.Catalog.Model.Offer", "CurrentOffer")
                         .WithMany()
                         .HasForeignKey("CurrentOfferId");
+
+                    b.HasOne("ClothingStoreFranchise.NetCore.Catalog.Model.Category", "Subcategory")
+                        .WithMany("CatalogProducts")
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ClothingStoreFranchise.NetCore.Catalog.Model.Category", b =>
                 {
+                    b.HasOne("ClothingStoreFranchise.NetCore.Catalog.Model.Category", "CategoryBelonging")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("CategoryBelongingId");
+
                     b.HasOne("ClothingStoreFranchise.NetCore.Catalog.Model.Offer", "CurrentOffer")
                         .WithMany()
                         .HasForeignKey("CurrentOfferId");
