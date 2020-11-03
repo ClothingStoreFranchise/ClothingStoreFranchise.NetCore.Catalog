@@ -1,8 +1,5 @@
 ﻿using ClothingStoreFranchise.NetCore.Common.Extensible;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClothingStoreFranchise.NetCore.Catalog.Model
 {
@@ -18,9 +15,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Model
 
         public DateTime EndDate { get; set; }
 
-        public override long GetAppId()
-        {
-            throw new NotImplementedException();
-        }
+        public override long GetAppId() => Id;
     }
 }

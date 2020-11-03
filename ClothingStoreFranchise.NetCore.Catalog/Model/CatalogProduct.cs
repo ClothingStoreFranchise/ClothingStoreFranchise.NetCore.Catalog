@@ -1,19 +1,12 @@
-﻿using ClothingStoreFranchise.NetCore.Catalog.Dto;
-using ClothingStoreFranchise.NetCore.Common.Extensible;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using ClothingStoreFranchise.NetCore.Common.Extensible;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClothingStoreFranchise.NetCore.Catalog.Model
 {
     public class CatalogProduct : ExtensibleEntity<long>
     {
         public string Name { get; set; }
-
-        public int Stock { get; set; }
 
         public decimal UnitPrice { get; set; }
 
@@ -23,11 +16,11 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Model
 
         public ICollection<Offer> Offers { get; set; }
 
-        public long? CatalogProductId { get; set; }
+        [ForeignKey("Subategory")]
+        public long SubcategoryId { get; set; }
 
-        public override long GetAppId()
-        {
-            throw new NotImplementedException();
-        }
+        public Category Subcategory { get; set; }
+
+        public override long GetAppId() => Id;
     }
 }

@@ -1,28 +1,36 @@
-﻿using ClothingStoreFranchise.NetCore.Common.Extensible;
-using System;
+﻿using ClothingStoreFranchise.NetCore.Common.Constants;
+using ClothingStoreFranchise.NetCore.Common.Extensible;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClothingStoreFranchise.NetCore.Catalog.Model
 {
     public class Category : ExtensibleEntity<long>
     {
-        public string Nombre { get; set; }
+        public string Name { get; set; }
 
-        public long? CategoryBelonging { get; set; }
+        [ForeignKey("CategoryBelonging")]
+        public long? CategoryBelongingId { get; set; }
 
-        [NotMapped]
+        public Category CategoryBelonging { get; set; }
+
         public ICollection<Category> Subcategories { get; set; }
+
+        public ClothingSizeType? TypeClothingSize { get; set; }
 
         public Offer CurrentOffer { get; set; }
 
         public ICollection<Offer> Offers { get; set; }
 
-        public override long GetAppId()
+        public ICollection<CatalogProduct> CatalogProducts { get; set; }
+
+        public override long GetAppId() => Id;
+
+        public Category()
         {
-            throw new NotImplementedException();
+            Subcategories = new List<Category>();
+            Offers = new List<Offer>();
+            CatalogProducts = new List<CatalogProduct>();
         }
     }
 }
