@@ -2,10 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClothingStoreFranchise.NetCore.Catalog
 {
@@ -20,6 +16,13 @@ namespace ClothingStoreFranchise.NetCore.Catalog
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Offer> Offers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+             modelBuilder.Entity<Category>()
+                .Property(x => x.Id)
+                .UseIdentityColumn(seed: 0, increment: 1);
+        }
     }
 
     public class CatalogContextFactory : IDesignTimeDbContextFactory<CatalogContext>
