@@ -6,6 +6,7 @@ using ClothingStoreFranchise.NetCore.Catalog.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
@@ -28,10 +29,22 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(productCreatedEvent);
             return productCreated;
         }
-        
-        public Task<ICollection<string>> LoadEditableEntitiesAsync()
+
+        public override async Task<CatalogProductDto> UpdateAsync(CatalogProductDto catalogProductDto)
         {
-            throw new NotImplementedException();
+            var productUpdated = await base.UpdateAsync(catalogProductDto);
+            var productUpdatedEvent = _mapper.Map<UpdateProductEvent>(productUpdated);
+            await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(productUpdatedEvent);
+            await _catalogIntegrationEventService.PublishThroughEventBusAsync(productUpdatedEvent);
+            return productUpdated;
+        }
+
+        public override async Task DeleteAsync(long id)
+        {
+            await base.DeleteAsync(id);
+            var deleteProductEvent = new DeleteProductEvent(id);
+            await _catalogIntegrationEventService.SaveEventAndCatalogContextChangesAsync(deleteProductEvent);
+            await _catalogIntegrationEventService.PublishThroughEventBusAsync(deleteProductEvent);
         }
 
         protected override Expression<Func<CatalogProduct, bool>> EntityAlreadyExistsCondition(CatalogProductDto dto)

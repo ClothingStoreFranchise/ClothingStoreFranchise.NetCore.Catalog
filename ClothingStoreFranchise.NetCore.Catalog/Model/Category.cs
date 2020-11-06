@@ -16,7 +16,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Model
 
         public ICollection<Category> Subcategories { get; set; }
 
-        public ClothingSizeType? TypeClothingSize { get; set; }
+        public ClothingSizeType? ClothingSizeType { get; set; }
 
         public Offer CurrentOffer { get; set; }
 

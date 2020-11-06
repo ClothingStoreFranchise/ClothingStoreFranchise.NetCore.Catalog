@@ -19,15 +19,18 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Mapper
                 
 
             CreateMap<CatalogProductDto, CreateProductEvent>()
-                .AfterMap<TrackCatalogProductAction>();
-                //.ForMember(dest => dest.TypeClothingSize, opt => opt.MapFrom(src => src.Subcategory.TypeClothingSize));
+                .AfterMap<TrackCreateProductEventAction>();
+
+            CreateMap<CatalogProductDto, UpdateProductEvent>()
+                .AfterMap<TrackUpdateProductEventAction>();
         }
     }
-    public class TrackCatalogProductAction : IMappingAction<CatalogProductDto, CreateProductEvent>
+
+    public class TrackCreateProductEventAction : IMappingAction<CatalogProductDto, CreateProductEvent>
     {
         private readonly ICategoryDao _categoryDao;
 
-        public TrackCatalogProductAction(ICategoryDao categoryDao) 
+        public TrackCreateProductEventAction(ICategoryDao categoryDao) 
         {
             _categoryDao = categoryDao;
         }
@@ -41,7 +44,29 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Mapper
         public void TrackCategory(CatalogProductDto dto, CreateProductEvent @event)
         {
             Category b = _categoryDao.Load(dto.SubcategoryId);
-            @event.ClothingSizeType = (ClothingSizeType)b.TypeClothingSize;
+            @event.ClothingSizeType = (ClothingSizeType)b.ClothingSizeType;
+        }
+    }
+
+    public class TrackUpdateProductEventAction : IMappingAction<CatalogProductDto, UpdateProductEvent>
+    {
+        private readonly ICategoryDao _categoryDao;
+
+        public TrackUpdateProductEventAction(ICategoryDao categoryDao)
+        {
+            _categoryDao = categoryDao;
+        }
+
+
+        public void Process(CatalogProductDto source, UpdateProductEvent destination, ResolutionContext context)
+        {
+            TrackCategory(source, destination);
+        }
+
+        public void TrackCategory(CatalogProductDto dto, UpdateProductEvent @event)
+        {
+            Category b = _categoryDao.Load(dto.SubcategoryId);
+            @event.ClothingSizeType = (ClothingSizeType)b.ClothingSizeType;
         }
     }
 }

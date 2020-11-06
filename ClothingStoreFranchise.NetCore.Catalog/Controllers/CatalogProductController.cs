@@ -20,7 +20,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Controllers
 
         [HttpGet]
         public async Task<ActionResult<ICollection<CatalogProductDto>>> Get()
-        {        //public IEnumerable<Customer> Get()
+        {        
             return Ok(await _catalogProductService.LoadAllAsync());
         }
 
@@ -28,6 +28,18 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Controllers
         public async Task<ActionResult<CatalogProductDto>> Post([FromBody] CatalogProductDto catalogProductDto)
         {
             return Ok(await _catalogProductService.CreateAsync(catalogProductDto));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<CatalogProductDto>> Update([FromBody] CatalogProductDto catalogProductDto)
+        {
+            return Ok(await _catalogProductService.UpdateAsync(catalogProductDto));
+        }
+
+        [HttpDelete("{productId}")]
+        public async Task Delete(long productId){
+ 
+            await _catalogProductService.DeleteAsync(productId);
         }
     }
 }

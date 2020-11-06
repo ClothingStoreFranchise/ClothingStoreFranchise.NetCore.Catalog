@@ -101,22 +101,17 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected async virtual Task<TEntity> UpdateValidationActionsAsync(TEntityDto dto)
         {
-            //TEntity entity = await _entityDao.LoadAsync(dto.Key());
-            /*if (!AreEntitiesVisible(new[] { entity }, true))
-            {
-                throw new EntityDoesNotExistException();
-            }*/
+            TEntity entity = await _entityDao.LoadAsync(dto.Key());
             /*if (!IsValid(dto))
             {
                 //throw new InvalidDataException();
             }*/
-            if (await _entityDao.AnyAsync(EntityAlreadyExistsToUpdateCondition(dto)))
+            /*if (await _entityDao.AnyAsync(EntityAlreadyExistsToUpdateCondition(dto)))
             {
                 //throw new EntityAlreadyExistsException();
-            }
+            }*/
 
-            //return entity;
-            return null;
+            return entity;
         }
 
         protected async virtual Task<TEntityDto> UpdateActionsAsync(TEntity entity, TEntityDto dto)
@@ -128,6 +123,11 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
         #endregion
 
         #region "Delete"
+
+        public async virtual Task DeleteAsync(TAppId appId)
+        {
+            await _entityDao.DeleteAsync(appId);
+        }
 
         public async virtual Task DeleteAsync(ICollection<TAppId> listAppId)
         {
