@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,6 +34,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                         .Annotation("SqlServer:Identity", "0, 1"),
                     Name = table.Column<string>(nullable: true),
                     CategoryBelongingId = table.Column<long>(nullable: true),
+                    ClothingSizeType = table.Column<int>(nullable: true),
                     CurrentOfferId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
@@ -60,12 +61,10 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
-                    Stock = table.Column<int>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
                     PictureUrl = table.Column<string>(nullable: true),
                     CurrentOfferId = table.Column<long>(nullable: true),
-                    SubategoryId = table.Column<long>(nullable: false),
-                    CatalogProductId = table.Column<long>(nullable: true)
+                    SubcategoryId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,8 +76,8 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CatalogProducts_Categories_SubategoryId",
-                        column: x => x.SubategoryId,
+                        name: "FK_CatalogProducts_Categories_SubcategoryId",
+                        column: x => x.SubcategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -90,9 +89,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                 column: "CurrentOfferId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CatalogProducts_SubategoryId",
+                name: "IX_CatalogProducts_SubcategoryId",
                 table: "CatalogProducts",
-                column: "SubategoryId");
+                column: "SubcategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_CategoryBelongingId",

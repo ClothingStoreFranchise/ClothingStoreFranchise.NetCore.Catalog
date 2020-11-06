@@ -62,14 +62,14 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                     b.Property<long?>("CategoryBelongingId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("ClothingSizeType")
+                        .HasColumnType("int");
+
                     b.Property<long?>("CurrentOfferId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TypeClothingSize")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

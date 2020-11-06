@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20201004231030_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201104174942_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,9 +28,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("CatalogProductId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("CurrentOfferId")
                         .HasColumnType("bigint");
 
@@ -40,10 +37,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
-                    b.Property<long>("SubategoryId")
+                    b.Property<long>("SubcategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("UnitPrice")
@@ -53,7 +47,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
 
                     b.HasIndex("CurrentOfferId");
 
-                    b.HasIndex("SubategoryId");
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("CatalogProducts");
                 });
@@ -69,6 +63,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
 
                     b.Property<long?>("CategoryBelongingId")
                         .HasColumnType("bigint");
+
+                    b.Property<int?>("ClothingSizeType")
+                        .HasColumnType("int");
 
                     b.Property<long?>("CurrentOfferId")
                         .HasColumnType("bigint");
@@ -128,9 +125,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Migrations.CatalogMigrations
                         .WithMany()
                         .HasForeignKey("CurrentOfferId");
 
-                    b.HasOne("ClothingStoreFranchise.NetCore.Catalog.Model.Category", "Subategory")
+                    b.HasOne("ClothingStoreFranchise.NetCore.Catalog.Model.Category", "Subcategory")
                         .WithMany("CatalogProducts")
-                        .HasForeignKey("SubategoryId")
+                        .HasForeignKey("SubcategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
