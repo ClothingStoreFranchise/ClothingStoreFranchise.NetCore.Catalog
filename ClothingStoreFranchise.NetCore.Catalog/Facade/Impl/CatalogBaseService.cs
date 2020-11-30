@@ -94,14 +94,16 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         public async virtual Task<TEntityDto> UpdateAsync(TEntityDto dto)
         {
-            TEntity entity = await UpdateValidationActionsAsync(dto);
-            entity = _mapper.Map(dto, entity);
+
+            //TEntity entity = UpdateValidationActions(dto);
+            //entity = _mapper.Map(dto, entity);
+            TEntity entity = _mapper.Map<TEntity>(dto);
             return await UpdateActionsAsync(entity, dto);
         }
 
-        protected async virtual Task<TEntity> UpdateValidationActionsAsync(TEntityDto dto)
+        protected virtual TEntity UpdateValidationActions(TEntityDto dto)
         {
-            TEntity entity = await _entityDao.LoadAsync(dto.Key());
+            TEntity entity = _entityDao.Load(dto.Key());
             /*if (!IsValid(dto))
             {
                 //throw new InvalidDataException();

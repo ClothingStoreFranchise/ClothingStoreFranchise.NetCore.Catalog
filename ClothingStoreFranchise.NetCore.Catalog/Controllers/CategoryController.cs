@@ -22,10 +22,10 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Controllers
             return Ok(await _categoryService.GetAllParentCategories());
         }
 
-        [HttpGet("subcategory/{subcategoryid}")]
-        public async Task<ActionResult<ICollection<CatalogProductDto>>> GetSubcategoryProducts(long subcategoryid)
+        [HttpGet("subcategory/{subcategoryId}")]
+        public async Task<ActionResult<ICollection<CatalogProductDto>>> GetSubcategoryProducts(long subcategoryId)
         {
-            return Ok(await _categoryService.GetSubcategoryProducts(subcategoryid));
+            return Ok(await _categoryService.GetSubcategoryProducts(subcategoryId));
         }
 
         [HttpPost]

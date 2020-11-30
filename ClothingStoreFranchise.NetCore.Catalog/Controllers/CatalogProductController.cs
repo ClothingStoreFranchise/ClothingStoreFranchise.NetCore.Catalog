@@ -19,7 +19,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<CatalogProductDto>>> Get()
+        public async Task<ActionResult<ICollection<CatalogProductDto>>> GetAll()
         {        
             return Ok(await _catalogProductService.LoadAllAsync());
         }

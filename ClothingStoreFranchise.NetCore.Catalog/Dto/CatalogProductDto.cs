@@ -23,8 +23,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Dto
 
         public Category Subcategory { get; set; }
 
-        //public override string ExtensibleEntityName => typeof(CatalogProduct).Name;
-
         public long Key() => Id;
     }
 }

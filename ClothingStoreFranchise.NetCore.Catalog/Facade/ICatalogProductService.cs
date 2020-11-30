@@ -6,12 +6,12 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade
 {
     public interface ICatalogProductService
     {
-        Task<CatalogProductDto> CreateAsync(CatalogProductDto customer);
+        Task<CatalogProductDto> CreateAsync(CatalogProductDto catalogProductDto);
 
 
-        Task<ICollection<CatalogProductDto>> CreateAsync(ICollection<CatalogProductDto> customer);
+        Task<ICollection<CatalogProductDto>> CreateAsync(ICollection<CatalogProductDto> catalogProductDtos);
 
-        Task<CatalogProductDto> UpdateAsync(CatalogProductDto customer);
+        Task<CatalogProductDto> UpdateAsync(CatalogProductDto catalogProductDto);
 
         Task DeleteAsync(long id);
 
