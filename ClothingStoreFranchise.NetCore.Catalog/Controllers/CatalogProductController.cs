@@ -1,7 +1,5 @@
 ﻿using ClothingStoreFranchise.NetCore.Catalog.Dto;
 using ClothingStoreFranchise.NetCore.Catalog.Facade;
-using ClothingStoreFranchise.NetCore.Common.Constants;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
