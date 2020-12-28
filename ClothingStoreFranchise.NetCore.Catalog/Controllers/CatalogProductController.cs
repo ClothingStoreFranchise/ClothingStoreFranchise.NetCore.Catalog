@@ -22,6 +22,12 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Controllers
             return Ok(await _catalogProductService.LoadAllAsync());
         }
 
+        [HttpGet("novelties")]
+        public async Task<ActionResult<ICollection<CatalogProductDto>>> GetNovelties()
+        {
+            return Ok(await _catalogProductService.GetNovelties());
+        }
+
         [HttpPost]
         public async Task<ActionResult<CatalogProductDto>> Post([FromBody] CatalogProductDto catalogProductDto)
         {

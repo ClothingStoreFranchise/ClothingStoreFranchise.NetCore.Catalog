@@ -47,6 +47,12 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             await _catalogIntegrationEventService.PublishThroughEventBusAsync(deleteProductEvent);
         }
 
+        public async Task<ICollection<CatalogProductDto>> GetNovelties()
+        {
+            var novelties = await _entityDao.GetNovelties();
+            return novelties.Select(l => _mapper.Map<CatalogProductDto>(l)).ToList();
+        }
+
         protected override Expression<Func<CatalogProduct, bool>> EntityAlreadyExistsCondition(CatalogProductDto dto)
         {
             throw new NotImplementedException();

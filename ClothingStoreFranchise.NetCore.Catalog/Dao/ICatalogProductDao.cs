@@ -9,5 +9,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Dao
 {
     public interface ICatalogProductDao : IDao<CatalogProduct, long>
     {
+        Task<ICollection<CatalogProduct>> GetNovelties();
     }
 }
