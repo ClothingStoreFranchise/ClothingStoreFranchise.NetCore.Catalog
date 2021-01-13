@@ -1,4 +1,4 @@
-# ClothingStoreFranchise.NetCore.Catalog
+# ClothingStoreFranchise: Catalog Microservice
 
 **Description**
 ----------------
