@@ -11,7 +11,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Mapper
     {
         public CatalogProductProfile()
         {
-            CreateMap<CatalogProduct, CatalogProductDto>();
+            CreateMap<CatalogProduct, CatalogProductDto>()
+                .ForMember(dest => dest.SubcategoryName, opt => opt.MapFrom(src => src.Subcategory.Name))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Subcategory.CategoryBelonging.Name));
 
             CreateMap<CatalogProductDto, CatalogProduct>()
                 .ForMember(entity => entity.CurrentOffer, p => p.Ignore())

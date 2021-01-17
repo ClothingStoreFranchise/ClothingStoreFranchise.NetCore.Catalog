@@ -18,10 +18,10 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Dao.Impl
             return await QueryTemplate().OrderByDescending(c => c.Id).Take(4).ToListAsync();
         }
 
-        /*protected override IQueryable<CatalogProduct> QueryTemplate()
+        protected override IQueryable<CatalogProduct> QueryTemplate()
         {
             return base.QueryTemplate()
-                .Include(o => o.Subcategory);
-        }*/
+                .Include(o => o.Subcategory.CategoryBelonging);
+        }
     }
 }

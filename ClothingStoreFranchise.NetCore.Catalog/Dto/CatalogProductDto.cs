@@ -21,7 +21,9 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Dto
 
         public long SubcategoryId { get; set; }
 
-        public Category Subcategory { get; set; }
+        public string SubcategoryName { get; set; }
+
+        public string CategoryName { get; set; }
 
         public long Key() => Id;
     }
