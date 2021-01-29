@@ -89,7 +89,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog
         {
             services.AddEntityFrameworkSqlServer().AddDbContext<CatalogContext>(options =>
             {
-                options.UseSqlServer(@"data source=localhost\SQLEXPRESS; initial catalog=Catalog; Trusted_Connection=True;MultipleActiveResultSets=true",
+                options.UseSqlServer(@"data source=127.0.0.1; initial catalog=Catalog; persist security info=True; user id=sqlserver; password=root",
                                      sqlServerOptionsAction: sqlOptions =>
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
@@ -100,7 +100,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
             {
-                options.UseSqlServer(@"data source=localhost\SQLEXPRESS; initial catalog=Catalog; Trusted_Connection=True;MultipleActiveResultSets=true",
+                options.UseSqlServer(@"data source=127.0.0.1; initial catalog=Catalog; persist security info=True; user id=sqlserver; password=root",
                                      sqlServerOptionsAction: sqlOptions =>
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);

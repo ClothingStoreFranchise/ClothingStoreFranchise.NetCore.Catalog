@@ -30,8 +30,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog
         public CatalogContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<CatalogContext>()
-                .UseSqlServer(@"data source=localhost\SQLEXPRESS; initial catalog=Catalog;
-                Trusted_Connection=True;MultipleActiveResultSets=true")
+                .UseSqlServer(@"data source=127.0.0.1; initial catalog=Catalog; persist security info=True; user id=sqlserver; password=root")
                 .EnableSensitiveDataLogging(true)
                 .UseLoggerFactory(new LoggerFactory());
 
