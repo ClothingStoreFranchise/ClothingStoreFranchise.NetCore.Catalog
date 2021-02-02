@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClothingStoreFranchise.NetCore.Common.Exceptions;
 using ClothingStoreFranchise.NetCore.Common.Types;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,8 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         public async virtual Task<TEntityDto> CreateAsync(TEntityDto dto)
         {
-            //await CreateValidationActionsAsync(dto);
+
+            await CreateValidationActionsAsync(dto);
             TEntity entity = _mapper.Map<TEntity>(dto);
             return await CreateActionsAsync(entity);
         }
@@ -36,7 +38,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             var entities = new List<TEntity>();
             foreach (TEntityDto dto in dtos)
             {
-                //await CreateValidationActionsAsync(dto);
+                await CreateValidationActionsAsync(dto);
                 TEntity entity = _mapper.Map<TEntity>(dto);
                 entities.Add(entity);
             }
@@ -45,13 +47,13 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected async virtual Task CreateValidationActionsAsync(TEntityDto dto)
         {
-            /*if (!IsValid(dto))
+            if (!IsValid(dto))
             {
-                //throw new InvalidDataException();
-            }*/
+                throw new InvalidDataException();
+            }
             if (await _entityDao.AnyAsync(EntityAlreadyExistsToCreateCondition(dto)))
             {
-                //throw new EntityAlreadyExistsException();
+                throw new EntityAlreadyExistsException();
             }
         }
 
@@ -74,10 +76,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
         public async virtual Task<TEntityDto> LoadAsync(TAppId appId)
         {
             TEntity entity = await _entityDao.LoadAsync(appId);
-            /*if ()
-            {
-                //throw new EntityDoesNotExistException();
-            }*/
 
             return _mapper.Map<TEntityDto>(entity);
         }
@@ -94,26 +92,22 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         public async virtual Task<TEntityDto> UpdateAsync(TEntityDto dto)
         {
-
-            //TEntity entity = UpdateValidationActions(dto);
-            //entity = _mapper.Map(dto, entity);
+            await UpdateValidationActions(dto);
+            
             TEntity entity = _mapper.Map<TEntity>(dto);
             return await UpdateActionsAsync(entity, dto);
         }
 
-        protected virtual TEntity UpdateValidationActions(TEntityDto dto)
+        protected async virtual Task UpdateValidationActions(TEntityDto dto)
         {
-            TEntity entity = _entityDao.Load(dto.Key());
-            /*if (!IsValid(dto))
+            if (!IsValid(dto))
             {
-                //throw new InvalidDataException();
-            }*/
-            /*if (await _entityDao.AnyAsync(EntityAlreadyExistsToUpdateCondition(dto)))
+                throw new InvalidDataException();
+            }
+            if (!await _entityDao.AnyAsync(EntityAlreadyExistsToUpdateCondition(dto)))
             {
-                //throw new EntityAlreadyExistsException();
-            }*/
-
-            return entity;
+                throw new EntityDoesNotExistException();
+            }
         }
 
         protected async virtual Task<TEntityDto> UpdateActionsAsync(TEntity entity, TEntityDto dto)
@@ -175,6 +169,8 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
         /// <returns></returns>
         protected abstract Expression<Func<TEntity, bool>> EntityHasDependenciesToDeleteCondition(ICollection<TAppId> listAppIds);
 
+        protected abstract Expression<Func<TEntity, bool>> EntityAlreadyExistsToUpdateCondition(TEntityDto dto);
+
         #endregion
 
         #region "Protected methods"
@@ -184,10 +180,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
             return EntityAlreadyExistsCondition(dto);
         }
 
-        protected virtual Expression<Func<TEntity, bool>> EntityAlreadyExistsToUpdateCondition(TEntityDto dto)
-        {
-            return EntityAlreadyExistsCondition(dto);
-        }
         #endregion
     }
 }

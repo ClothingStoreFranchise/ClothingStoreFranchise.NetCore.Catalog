@@ -31,7 +31,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Controllers
         [HttpPost]
         public async Task<ActionResult<CatalogProductDto>> Post([FromBody] CatalogProductDto catalogProductDto)
         {
-            return Ok(await _catalogProductService.CreateAsync(catalogProductDto));
+            return Created("catalog_products",await _catalogProductService.CreateAsync(catalogProductDto));
         }
 
         [HttpPut]

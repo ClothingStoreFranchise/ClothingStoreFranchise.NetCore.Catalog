@@ -29,7 +29,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog
             .UseStartup<Startup>()
             .Build();
 
-        private static IConfiguration GetConfiguration()
+        public static IConfiguration GetConfiguration()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

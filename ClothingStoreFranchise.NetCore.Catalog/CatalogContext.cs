@@ -1,5 +1,6 @@
 ﻿using ClothingStoreFranchise.NetCore.Catalog.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
 
@@ -29,8 +30,10 @@ namespace ClothingStoreFranchise.NetCore.Catalog
     {
         public CatalogContext CreateDbContext(string[] args)
         {
+            IConfiguration configuration = Program.GetConfiguration();
+
             var optionsBuilder = new DbContextOptionsBuilder<CatalogContext>()
-                .UseSqlServer(@"data source=127.0.0.1; initial catalog=Catalog; persist security info=True; user id=sqlserver; password=root")
+                .UseSqlServer(@configuration["DatabaseConnection:DataSource"])
                 .EnableSensitiveDataLogging(true)
                 .UseLoggerFactory(new LoggerFactory());
 

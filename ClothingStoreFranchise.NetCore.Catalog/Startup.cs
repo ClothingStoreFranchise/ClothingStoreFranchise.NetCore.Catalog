@@ -54,7 +54,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog
 
             services.AddCatalogServices();
 
-            services.AddCustomDbContext();
+            services.AddCustomDbContext(Configuration);
 
             services.AddSingleton(MapperProvider);
 
@@ -70,13 +70,14 @@ namespace ClothingStoreFranchise.NetCore.Catalog
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler("/error");
 
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
 
             var swaggerOptions = new SwaggerOptions();
             Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);

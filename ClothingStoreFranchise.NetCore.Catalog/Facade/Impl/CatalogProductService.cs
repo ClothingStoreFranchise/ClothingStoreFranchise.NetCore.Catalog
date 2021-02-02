@@ -55,7 +55,12 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected override Expression<Func<CatalogProduct, bool>> EntityAlreadyExistsCondition(CatalogProductDto dto)
         {
-            throw new NotImplementedException();
+            return p => p.PictureUrl == dto.PictureUrl || p.Id == dto.Id;
+        }
+
+        protected override Expression<Func<CatalogProduct, bool>> EntityAlreadyExistsToUpdateCondition(CatalogProductDto dto)
+        {
+            return p =>  p.Id == dto.Id;
         }
 
         protected override Expression<Func<CatalogProduct, bool>> EntityHasDependenciesToDeleteCondition(ICollection<long> listAppIds)
@@ -65,7 +70,19 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected override bool IsValid(CatalogProductDto dto)
         {
-            throw new NotImplementedException();
+            return NullValidations(dto) && NumericValidations(dto);
+        }
+
+        private static bool NullValidations(CatalogProductDto dto)
+        {
+            return dto != null
+                && !string.IsNullOrWhiteSpace(dto.Name)
+                && !string.IsNullOrWhiteSpace(dto.PictureUrl);
+        }
+
+        private static bool NumericValidations(CatalogProductDto dto)
+        {
+            return dto.UnitPrice > 0;
         }
     }
 }

@@ -8,6 +8,7 @@ using ClothingStoreFranchise.NetCore.Common.Events;
 using ClothingStoreFranchise.NetCore.Common.RabbitMq;
 using ClothingStoreFranchise.NetCore.Common.RabbitMq.Impl;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -85,11 +86,11 @@ namespace ClothingStoreFranchise.NetCore.Catalog
             return services;
         }
 
-        public static IServiceCollection AddCustomDbContext(this IServiceCollection services)
+        public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEntityFrameworkSqlServer().AddDbContext<CatalogContext>(options =>
             {
-                options.UseSqlServer(@"data source=127.0.0.1; initial catalog=Catalog; persist security info=True; user id=sqlserver; password=root",
+                options.UseSqlServer(@configuration["DatabaseConnection:DataSource"],
                                      sqlServerOptionsAction: sqlOptions =>
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
@@ -100,7 +101,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
             {
-                options.UseSqlServer(@"data source=127.0.0.1; initial catalog=Catalog; persist security info=True; user id=sqlserver; password=root",
+                options.UseSqlServer(@configuration["DatabaseConnection:DataSource"],
                                      sqlServerOptionsAction: sqlOptions =>
                                      {
                                          sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);

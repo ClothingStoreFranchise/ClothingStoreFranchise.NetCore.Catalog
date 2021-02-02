@@ -36,7 +36,13 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected override Expression<Func<Category, bool>> EntityAlreadyExistsCondition(CategoryDto dto)
         {
-            throw new NotImplementedException();
+            return c => c.CategoryBelongingId == dto.CategoryBelongingId
+                && c.Name == dto.Name;
+        }
+
+        protected override Expression<Func<Category, bool>> EntityAlreadyExistsToUpdateCondition(CategoryDto dto)
+        {
+            return c => c.Id == dto.Id;
         }
 
         protected override Expression<Func<Category, bool>> EntityHasDependenciesToDeleteCondition(ICollection<long> listAppIds)
@@ -46,7 +52,23 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected override bool IsValid(CategoryDto dto)
         {
-            throw new NotImplementedException();
+            var isValid = false;
+            if (NullValidations(dto))
+            {
+                isValid = true;
+
+                if(dto.CategoryBelongingId != null && dto.ClothingSizeType == null)
+                {
+                    isValid = false;
+                }
+            }
+            return isValid;
+        }
+
+        private static bool NullValidations(CategoryDto dto)
+        {
+            return dto != null
+                && !string.IsNullOrWhiteSpace(dto.Name);
         }
     }
 }
