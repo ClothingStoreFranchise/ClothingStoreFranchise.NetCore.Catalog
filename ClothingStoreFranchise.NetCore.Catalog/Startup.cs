@@ -1,7 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ClothingStoreFranchise.NetCore.Catalog.Mapper;
-using ClothingStoreFranchise.NetCore.Common.Constants;
 using ClothingStoreFranchise.NetCore.Common.Extensible;
 using ClothingStoreFranchise.NetCore.Common.Mapper;
 using ClothingStoreFranchise.NetCore.Common.RabbitMq;
@@ -45,13 +44,6 @@ namespace ClothingStoreFranchise.NetCore.Catalog
             services.AddAuthentication("Basic")
                  .AddScheme<BasicAuthenticationOptions, CustomAuthenticationHandler>("Basic", null);
 
-            services.AddAuthorization(config =>
-            {
-                //UPDATE is new in common
-                config.AddPolicy(Policies.Admin, Policies.AdminPolicy());
-                config.AddPolicy(Policies.Customer, Policies.CustomerAdminPolicy());
-            });
-
             services.AddCatalogServices();
 
             services.AddCustomDbContext(Configuration);
@@ -78,6 +70,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog
             app.UseRouting();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             var swaggerOptions = new SwaggerOptions();
             Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);

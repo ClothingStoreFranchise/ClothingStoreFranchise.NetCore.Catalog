@@ -76,7 +76,10 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
         public async virtual Task<TEntityDto> LoadAsync(TAppId appId)
         {
             TEntity entity = await _entityDao.LoadAsync(appId);
-
+            if (entity == null)
+            {
+                throw new EntityDoesNotExistException();
+            }
             return _mapper.Map<TEntityDto>(entity);
         }
 

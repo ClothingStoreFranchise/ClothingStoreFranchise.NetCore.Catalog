@@ -15,7 +15,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Controllers
             var code = 500;
 
             if (exception is EntityAlreadyExistsException) code = 409;
-            else if (exception is EntityDoesNotExistException) code = 400;
+            else if (exception is EntityDoesNotExistException) code = 404;
             else if (exception is InvalidDataException) code = 400;
 
             return Problem(

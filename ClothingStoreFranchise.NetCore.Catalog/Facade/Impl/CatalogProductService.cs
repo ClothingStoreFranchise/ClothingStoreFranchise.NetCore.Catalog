@@ -55,7 +55,7 @@ namespace ClothingStoreFranchise.NetCore.Catalog.Facade.Impl
 
         protected override Expression<Func<CatalogProduct, bool>> EntityAlreadyExistsCondition(CatalogProductDto dto)
         {
-            return p => p.PictureUrl == dto.PictureUrl || p.Id == dto.Id;
+            return p => p.PictureUrl == dto.PictureUrl;
         }
 
         protected override Expression<Func<CatalogProduct, bool>> EntityAlreadyExistsToUpdateCondition(CatalogProductDto dto)
